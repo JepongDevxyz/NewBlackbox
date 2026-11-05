@@ -86,6 +86,11 @@ public class ActivityManagerCommonProxy {
     private static final String PKG_FACEBOOK_AURA = "com.facebook.aura";
     private static final String PKG_FACEBOOK_ORCA = "com.facebook.orca";
     private static final String PKG_FACEBOOK_WAKIZASHI = "com.facebook.wakizashi";
+    // DevxyzClone 1.1.6 (STUDY-WEB-ROUTE §3.1): mirror of
+    // IPackageManagerProxy's PKG_FORCE_WEB_ROUTE - Mobile Legends is
+    // force-routed to the web OAuth route, so the native route is
+    // never active for this caller.
+    private static final String PKG_FORCE_WEB_ROUTE = "com.mobile.legends";
 
     private static boolean isMetaFamilyCaller(String callerPackage) {
         return PKG_FACEBOOK_AURA.equals(callerPackage)
@@ -99,6 +104,7 @@ public class ActivityManagerCommonProxy {
             if (callerPackage == null
                     || PKG_FACEBOOK_KATANA.equals(callerPackage)
                     || callerPackage.equals(BlackBoxCore.getHostPkg())
+                    || PKG_FORCE_WEB_ROUTE.equals(callerPackage)
                     || isMetaFamilyCaller(callerPackage)) {
                 return false;
             }

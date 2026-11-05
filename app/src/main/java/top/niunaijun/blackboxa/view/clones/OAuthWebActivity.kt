@@ -112,6 +112,24 @@ class OAuthWebActivity : BaseActivity() {
             return
         }
         delivered = true
+        // DevxyzClone 1.1.6 (STUDY-WEB-ROUTE §3.2): pre-flight line at
+        // deliver() entry - the redirect's scheme/host/path only, never
+        // the query or fragment (the access token travels there).
+        // deliver() itself performs no resolution: below it hands a
+        // bare ACTION_VIEW intent to the virtual ActivityManager,
+        // which resolves it server-side; a resolve-null drop there is
+        // now logged by ActivityStack ("startActivityLocked DROP
+        // resolve-null"), so this line plus that one bracket the seam.
+        val redir = try {
+            Uri.parse(url)
+        } catch (t: Throwable) {
+            null
+        }
+        DiagLog.log(
+            "OAuthWeb deliver userId=" + userId + " forResult=" + forResult +
+                " scheme=" + redir?.scheme + " host=" + redir?.host +
+                " path=" + redir?.path
+        )
         DiagLog.log("OAuthWeb completion forResult=$forResult url=$url")
         if (forResult) {
             val data = Intent().apply { this.data = Uri.parse(url) }

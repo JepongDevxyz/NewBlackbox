@@ -101,6 +101,24 @@ public class ActivityStack {
 
         ResolveInfo resolveInfo = BPackageManagerService.get().resolveActivity(intent, GET_ACTIVITIES, resolvedType, userId);
         if (resolveInfo == null || resolveInfo.activityInfo == null) {
+            // DevxyzClone 1.1.6 (STUDY-WEB-ROUTE §2.1/§3.2): make the
+            // drop loud. This was the only exit in this method with no
+            // DiagLog line at all, and it is caller-invisible by
+            // construction: BActivityManagerService.startActivity is a
+            // void AIDL method, so a caller like
+            // OAuthWebActivity.deliver() can never see this return 0 -
+            // the auth page just closes and nothing happens (the 1.1.0
+            // symptom). NO behavior change: the drop still aborts the
+            // start. Log the data URI's scheme only, never the full
+            // data string - OAuth redirect URIs carry access tokens in
+            // the fragment. (No caller package is in scope at this
+            // point; resultWho is the closest caller identity the
+            // method has.)
+            DiagLog.log("startActivityLocked DROP resolve-null userId=" + userId
+                    + " act=" + intent.getAction()
+                    + " cmp=" + intent.getComponent()
+                    + " scheme=" + (intent.getData() != null ? intent.getData().getScheme() : null)
+                    + " resultWho=" + resultWho);
             return 0;
         }
         Log.d(TAG, "startActivityLocked : " + resolveInfo.activityInfo);

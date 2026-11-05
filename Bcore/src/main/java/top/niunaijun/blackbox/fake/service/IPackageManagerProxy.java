@@ -74,6 +74,17 @@ public class IPackageManagerProxy extends BinderInvocationStub {
     private static final String PKG_FACEBOOK_ORCA = "com.facebook.orca";
     private static final String PKG_FACEBOOK_WAKIZASHI = "com.facebook.wakizashi";
     private static final String PKG_FACEBOOK_AURA = "com.facebook.aura";
+    // DevxyzClone 1.1.6 (STUDY-WEB-ROUTE §3.1): Mobile Legends is
+    // force-routed to the web OAuth route. The native Katana route
+    // failed on-device for this caller in 1.1.2-1.1.5 despite the
+    // delivery fixes (D1-D4) and the Katana-side fixes, while the web
+    // route carries no Katana-side validation at all and its return
+    // runs entirely through container-owned components. Caller-keyed,
+    // in the same style as the Meta-family protection above: for this
+    // caller the native route is never active. Mirrored in
+    // ActivityManagerCommonProxy and IActivityManagerProxy - keep the
+    // three predicate copies in lockstep.
+    private static final String PKG_FORCE_WEB_ROUTE = "com.mobile.legends";
     private static final String ACTION_CUSTOM_TABS_SERVICE = "android.support.customtabs.action.CustomTabsService";
 
     private static boolean shouldHideFacebookApp(String queriedPackageName) {
@@ -139,6 +150,7 @@ public class IPackageManagerProxy extends BinderInvocationStub {
             if (callerPackage == null
                     || PKG_FACEBOOK_KATANA.equals(callerPackage)
                     || callerPackage.equals(BlackBoxCore.getHostPkg())
+                    || PKG_FORCE_WEB_ROUTE.equals(callerPackage)
                     || isMetaFamilyCaller(callerPackage)) {
                 return false;
             }
@@ -202,6 +214,15 @@ public class IPackageManagerProxy extends BinderInvocationStub {
             // callers (Muse above all) stay hidden in every state.
             if (isMetaFamilyCaller(callerPackage)) {
                 diagKatanaVisibility(callerPackage, true, "meta-caller");
+                return true;
+            }
+            // DevxyzClone 1.1.6: ML is hidden in every state too, but
+            // by force-routing to the web OAuth route (see
+            // PKG_FORCE_WEB_ROUTE), not by the route check below -
+            // give it its own reason so the DiagLog does not claim
+            // Katana is merely not cloned for this caller.
+            if (PKG_FORCE_WEB_ROUTE.equals(callerPackage)) {
+                diagKatanaVisibility(callerPackage, true, "ml-web-forced");
                 return true;
             }
             // DevxyzClone 1.1.1: coherent un-hide gated on Katana being

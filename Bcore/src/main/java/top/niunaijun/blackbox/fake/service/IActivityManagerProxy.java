@@ -137,13 +137,16 @@ public class IActivityManagerProxy extends ClassInvocationStub {
     // lockstep: the route is active exactly when the current caller is
     // an ordinary clone app (not Katana itself, not the host, not a
     // Meta-family caller: aura/orca/wakizashi) AND Katana is installed
-    // inside the container for the caller's virtual user.
+    // inside the container for the caller's virtual user. DevxyzClone
+    // 1.1.6 (STUDY-WEB-ROUTE §3.1): com.mobile.legends is additionally
+    // always inactive - it is force-routed to the web OAuth route.
     private static boolean isKatanaNativeRouteActive() {
         try {
             String callerPackage = BActivityThread.getAppPackageName();
             if (callerPackage == null
                     || "com.facebook.katana".equals(callerPackage)
                     || callerPackage.equals(BlackBoxCore.getHostPkg())
+                    || "com.mobile.legends".equals(callerPackage)
                     || "com.facebook.aura".equals(callerPackage)
                     || "com.facebook.orca".equals(callerPackage)
                     || "com.facebook.wakizashi".equals(callerPackage)) {
