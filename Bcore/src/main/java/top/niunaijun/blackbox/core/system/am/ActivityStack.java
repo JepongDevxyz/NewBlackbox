@@ -156,7 +156,11 @@ public class ActivityStack {
                 && ComponentUtils.intentFilterEquals(taskRecord.rootIntent, intent)
                 && taskRecord.rootIntent.getFlags() == intent.getFlags();
 
-        if (startTaskToFront) {
+        // DevxyzClone 1.1.4 (STUDY-FB-RETURN-ROUND2, D3): never suppress a
+        // for-result start. A retry whose intent filter-equals the task
+        // root (intentFilterEquals ignores extras) must still launch and
+        // register its result instead of being silently dropped here.
+        if (startTaskToFront && requestCode < 0) {
             logRouteLocked("ignore", sourceRecord, activityInfo, resultTo, requestCode);
             return 0;
         }
@@ -241,25 +245,43 @@ public class ActivityStack {
         
 
         if (newIntentRecord != null) {
-            logRouteLocked("newIntent", sourceRecord, activityInfo, resultTo, requestCode);
-            deliverNewIntentLocked(newIntentRecord, intent);
-            return 0;
+            if (requestCode < 0) {
+                logRouteLocked("newIntent", sourceRecord, activityInfo, resultTo, requestCode);
+                deliverNewIntentLocked(newIntentRecord, intent);
+                return 0;
+            }
+            // DevxyzClone 1.1.4 (STUDY-FB-RETURN-ROUND2, D2): a for-result
+            // start is never satisfied by onNewIntent delivery to a stale
+            // record — deliverNewIntentLocked reads neither resultTo /
+            // resultWho nor requestCode, so the caller's result registration
+            // would be silently discarded (AOSP likewise refuses to reuse
+            // a task for a for-result start). Finish the stale record (the
+            // same mechanism finishAllActivity uses) and fall through to
+            // the tail, so the new attempt launches fresh with a live
+            // registration.
+            newIntentRecord.finished = true;
+            try {
+                newIntentRecord.processRecord.bActivityThread.finishActivity(newIntentRecord.token);
+            } catch (RemoteException ignored) {
+            }
         } else if (ignore) {
             logRouteLocked("ignore", sourceRecord, activityInfo, resultTo, requestCode);
             return 0;
         }
 
         if (resultTo == null) {
+            // Caller unknown (no source record for the caller's token):
+            // fall back to the target task's top activity as recipient.
             ActivityRecord top = taskRecord.getTopActivityRecord();
             if (top != null) {
                 resultTo = top.token;
             }
-        } else if (sourceTask != null) {
-            ActivityRecord top = sourceTask.getTopActivityRecord();
-            if (top != null) {
-                resultTo = top.token;
-            }
         }
+        // DevxyzClone 1.1.4 (STUDY-FB-RETURN-ROUND2, D4): when the caller
+        // IS known, resultTo is already the caller's own token and is
+        // never rewritten to the source task's top activity — a result
+        // registered to the wrong activity is ignored there for its
+        // foreign requestCode, and the real caller waits forever.
         logRouteLocked("sourceTask", sourceRecord, activityInfo, resultTo, requestCode);
         return startActivityInSourceTask(intent,
                 resolvedType, resultTo, resultWho, requestCode, flags, options, userId, topActivityRecord, activityInfo, launchModeFlags);
@@ -307,12 +329,25 @@ public class ActivityStack {
         ActivityRecord record = newActivityRecord(intent, activityInfo, resultTo, userId);
         Intent shadow = startActivityProcess(userId, intent, activityInfo, record);
 
-        shadow.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-        shadow.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        shadow.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        boolean forResult = requestCode >= 0 && sourceRecord != null && sourceRecord.processRecord != null;
+
+        if (!forResult) {
+            // DevxyzClone 1.1.4 (STUDY-FB-RETURN-ROUND2, D1): the task
+            // flags are added ONLY on the non-result path. A result-bearing
+            // shadow must never carry FLAG_ACTIVITY_NEW_TASK: the real AMS
+            // answers "result requested + NEW_TASK" by immediately sending
+            // RESULT_CANCELED to the caller and nulling the registration
+            // (ActivityStarter.sendNewTaskResultRequestIfNeeded), so the
+            // callee's setResult(RESULT_OK) would have nowhere to go. The
+            // source-task branch has always kept this invariant — it adds
+            // NEW_TASK only when resultTo == null.
+            shadow.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            shadow.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+            shadow.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
         shadow.addFlags(launchMode);
 
-        if (requestCode >= 0 && sourceRecord != null && sourceRecord.processRecord != null) {
+        if (forResult) {
             // DevxyzClone 1.1.3 (STUDY-FB-NATIVE-RETURN, break point #1): a
             // for-result launch routed to a new task must keep its result
             // registration with the real AMS, using the same mechanism as
