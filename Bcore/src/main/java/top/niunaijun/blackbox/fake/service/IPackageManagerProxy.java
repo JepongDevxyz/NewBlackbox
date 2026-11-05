@@ -1333,8 +1333,25 @@ public class IPackageManagerProxy extends BinderInvocationStub {
                 Slog.d(TAG, "SimpleAudioPermissionHook: Granting notification/Xiaomi permission: " + permission + " to " + packageName);
                 return PackageManager.PERMISSION_GRANTED;
             }
-            
-            
+
+
+            // DevxyzClone 1.1.8 (STUDY-GRAPH-NETWORK KP-1): the network
+            // branch this PM-level twin never got - 1.1.7 branched
+            // CheckSelfPermission (below) and the AMS hooks, but this
+            // hook still forwarded checkPermission(INTERNET, guestPkg)
+            // to the real PM under the guest's own package name, which
+            // answers DENIED on any clone-only install. That fall-through
+            // is what silently gates Moonton's account UI: ML's
+            // EntryPoint.CheckPrerequest consults
+            // PackageManager.checkPermission(INTERNET, ownPkg) before
+            // the Accountkit UI may open. Same branch shape as Port A.
+            if (isNetworkPermission(permission)) {
+                Slog.d(TAG, "SimpleAudioPermissionHook: Granting network permission: " + permission + " to " + packageName);
+                diagLog("checkPermission(PM) NET granted perm=" + permission + " pkg=" + packageName);
+                return PackageManager.PERMISSION_GRANTED;
+            }
+
+
             return method.invoke(who, args);
         }
     }
