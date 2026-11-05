@@ -38,6 +38,7 @@ import top.niunaijun.blackbox.proxy.ProxyActivity;
 import top.niunaijun.blackbox.proxy.ProxyManifest;
 import top.niunaijun.blackbox.proxy.record.ProxyActivityRecord;
 import top.niunaijun.blackbox.utils.ComponentUtils;
+import top.niunaijun.blackbox.utils.DiagLog;
 import top.niunaijun.blackbox.utils.Slog;
 import top.niunaijun.blackbox.utils.compat.ActivityManagerCompat;
 
@@ -139,7 +140,9 @@ public class ActivityStack {
 
         
         if (taskRecord == null || taskRecord.needNewTask()) {
-            return startActivityInNewTaskLocked(userId, intent, activityInfo, resultTo, launchModeFlags);
+            logRouteLocked("newTask", sourceRecord, activityInfo, resultTo, requestCode);
+            return startActivityInNewTaskLocked(userId, intent, resolvedType, activityInfo, resultTo, resultWho,
+                    requestCode, flags, options, sourceRecord, launchModeFlags);
         }
         
         mAms.moveTaskToFront(taskRecord.id, 0);
@@ -153,8 +156,10 @@ public class ActivityStack {
                 && ComponentUtils.intentFilterEquals(taskRecord.rootIntent, intent)
                 && taskRecord.rootIntent.getFlags() == intent.getFlags();
 
-        if (startTaskToFront)
+        if (startTaskToFront) {
+            logRouteLocked("ignore", sourceRecord, activityInfo, resultTo, requestCode);
             return 0;
+        }
 
         ActivityRecord topActivityRecord = taskRecord.getTopActivityRecord();
         ActivityRecord targetActivityRecord = findActivityRecordByComponentName(userId, ComponentUtils.toComponentName(activityInfo));
@@ -236,10 +241,11 @@ public class ActivityStack {
         
 
         if (newIntentRecord != null) {
-            
+            logRouteLocked("newIntent", sourceRecord, activityInfo, resultTo, requestCode);
             deliverNewIntentLocked(newIntentRecord, intent);
             return 0;
         } else if (ignore) {
+            logRouteLocked("ignore", sourceRecord, activityInfo, resultTo, requestCode);
             return 0;
         }
 
@@ -254,8 +260,27 @@ public class ActivityStack {
                 resultTo = top.token;
             }
         }
+        logRouteLocked("sourceTask", sourceRecord, activityInfo, resultTo, requestCode);
         return startActivityInSourceTask(intent,
                 resolvedType, resultTo, resultWho, requestCode, flags, options, userId, topActivityRecord, activityInfo, launchModeFlags);
+    }
+
+    // DevxyzClone 1.1.3 (STUDY-FB-NATIVE-RETURN §3): one DiagLog line per
+    // routed start, recording which branch of startActivityLocked took
+    // the launch. route=newTask/newIntent on a requestCode >= 0 start
+    // means the for-result registration was dropped container-side;
+    // route=sourceTask means the result was registered with the real AMS.
+    private void logRouteLocked(String route, ActivityRecord sourceRecord, ActivityInfo activityInfo,
+                                IBinder resultTo, int requestCode) {
+        String caller = sourceRecord != null && sourceRecord.info != null
+                ? sourceRecord.info.packageName : "null";
+        String target = activityInfo != null
+                ? activityInfo.packageName + "/" + activityInfo.name : "null";
+        DiagLog.log("startActivityLocked route=" + route
+                + " cmp=" + target
+                + " requestCode=" + requestCode
+                + " resultTo=" + (resultTo != null)
+                + " caller=" + caller);
     }
 
     private void deliverNewIntentLocked(ActivityRecord activityRecord, Intent intent) {
@@ -276,8 +301,9 @@ public class ActivityStack {
         return getStartStubActivityIntentInner(intent, targetApp.bpid, userId, stubRecord, info);
     }
 
-    private int startActivityInNewTaskLocked(int userId, Intent intent, ActivityInfo
-            activityInfo, IBinder resultTo, int launchMode) {
+    private int startActivityInNewTaskLocked(int userId, Intent intent, String resolvedType, ActivityInfo
+            activityInfo, IBinder resultTo, String resultWho, int requestCode, int flags,
+            Bundle options, ActivityRecord sourceRecord, int launchMode) {
         ActivityRecord record = newActivityRecord(intent, activityInfo, resultTo, userId);
         Intent shadow = startActivityProcess(userId, intent, activityInfo, record);
 
@@ -285,6 +311,18 @@ public class ActivityStack {
         shadow.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         shadow.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         shadow.addFlags(launchMode);
+
+        if (requestCode >= 0 && sourceRecord != null && sourceRecord.processRecord != null) {
+            // DevxyzClone 1.1.3 (STUDY-FB-NATIVE-RETURN, break point #1): a
+            // for-result launch routed to a new task must keep its result
+            // registration with the real AMS, using the same mechanism as
+            // the source-task branch. Plain Context.startActivity cannot
+            // carry a result request, so the caller's onActivityResult was
+            // never invoked and the result was silently discarded (ML
+            // Facebook native login: auth page shown, result lost).
+            return realStartActivityLocked(sourceRecord.processRecord.appThread, shadow, resolvedType,
+                    resultTo, resultWho, requestCode, flags, options);
+        }
 
         BlackBoxCore.getContext().startActivity(shadow);
         return 0;
