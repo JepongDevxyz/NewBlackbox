@@ -548,6 +548,8 @@
 
         <activity
             android:name=".proxy.ProxyActivity$P0"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p0"
@@ -556,6 +558,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P1"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p1"
@@ -564,6 +568,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P2"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p2"
@@ -572,6 +578,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P3"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p3"
@@ -580,6 +588,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P4"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p4"
@@ -588,6 +598,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P5"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p5"
@@ -596,6 +608,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P6"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p6"
@@ -604,6 +618,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P7"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p7"
@@ -612,6 +628,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P8"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p8"
@@ -620,6 +638,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P9"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p9"
@@ -628,6 +648,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P10"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p10"
@@ -636,6 +658,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P11"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p11"
@@ -644,6 +668,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P12"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p12"
@@ -652,6 +678,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P13"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p13"
@@ -660,6 +688,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P14"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p14"
@@ -668,6 +698,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P15"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p15"
@@ -676,6 +708,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P16"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p16"
@@ -684,6 +718,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P17"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p17"
@@ -692,6 +728,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P18"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p18"
@@ -700,6 +738,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P19"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p19"
@@ -708,6 +748,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P20"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p20"
@@ -716,6 +758,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P21"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p21"
@@ -724,6 +768,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P22"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p22"
@@ -732,6 +778,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P23"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p23"
@@ -740,6 +788,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P24"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p24"
@@ -748,6 +798,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P25"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p25"
@@ -756,6 +808,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P26"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p26"
@@ -764,6 +818,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P27"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p27"
@@ -772,6 +828,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P28"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p28"
@@ -780,6 +838,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P29"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p29"
@@ -788,6 +848,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P30"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p30"
@@ -796,6 +858,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P31"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p31"
@@ -804,6 +868,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P32"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p32"
@@ -812,6 +878,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P33"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p33"
@@ -820,6 +888,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P34"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p34"
@@ -828,6 +898,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P35"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p35"
@@ -836,6 +908,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P36"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p36"
@@ -844,6 +918,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P37"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p37"
@@ -852,6 +928,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P38"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p38"
@@ -860,6 +938,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P39"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p39"
@@ -868,6 +948,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P40"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p40"
@@ -876,6 +958,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P41"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p41"
@@ -884,6 +968,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P42"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p42"
@@ -892,6 +978,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P43"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p43"
@@ -900,6 +988,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P44"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p44"
@@ -908,6 +998,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P45"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p45"
@@ -916,6 +1008,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P46"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p46"
@@ -924,6 +1018,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P47"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p47"
@@ -932,6 +1028,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P48"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p48"
@@ -940,6 +1038,8 @@
             android:theme="@style/BTheme" />
         <activity
             android:name=".proxy.ProxyActivity$P49"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p49"
@@ -950,6 +1050,8 @@
 
         <activity
             android:name=".proxy.TransparentProxyActivity$P0"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p0"
@@ -958,6 +1060,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P1"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p1"
@@ -966,6 +1070,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P2"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p2"
@@ -974,6 +1080,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P3"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p3"
@@ -982,6 +1090,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P4"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p4"
@@ -990,6 +1100,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P5"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p5"
@@ -998,6 +1110,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P6"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p6"
@@ -1006,6 +1120,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P7"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p7"
@@ -1014,6 +1130,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P8"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p8"
@@ -1022,6 +1140,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P9"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p9"
@@ -1030,6 +1150,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P10"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p10"
@@ -1038,6 +1160,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P11"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p11"
@@ -1046,6 +1170,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P12"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p12"
@@ -1054,6 +1180,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P13"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p13"
@@ -1062,6 +1190,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P14"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p14"
@@ -1070,6 +1200,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P15"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p15"
@@ -1078,6 +1210,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P16"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p16"
@@ -1086,6 +1220,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P17"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p17"
@@ -1094,6 +1230,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P18"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p18"
@@ -1102,6 +1240,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P19"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p19"
@@ -1110,6 +1250,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P20"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p20"
@@ -1118,6 +1260,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P21"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p21"
@@ -1126,6 +1270,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P22"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p22"
@@ -1134,6 +1280,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P23"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p23"
@@ -1142,6 +1290,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P24"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p24"
@@ -1150,6 +1300,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P25"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p25"
@@ -1158,6 +1310,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P26"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p26"
@@ -1166,6 +1320,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P27"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p27"
@@ -1174,6 +1330,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P28"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p28"
@@ -1182,6 +1340,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P29"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p29"
@@ -1190,6 +1350,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P30"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p30"
@@ -1198,6 +1360,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P31"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p31"
@@ -1206,6 +1370,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P32"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p32"
@@ -1214,6 +1380,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P33"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p33"
@@ -1222,6 +1390,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P34"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p34"
@@ -1230,6 +1400,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P35"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p35"
@@ -1238,6 +1410,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P36"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p36"
@@ -1246,6 +1420,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P37"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p37"
@@ -1254,6 +1430,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P38"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p38"
@@ -1262,6 +1440,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P39"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p39"
@@ -1270,6 +1450,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P40"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p40"
@@ -1278,6 +1460,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P41"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p41"
@@ -1286,6 +1470,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P42"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p42"
@@ -1294,6 +1480,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P43"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p43"
@@ -1302,6 +1490,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P44"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p44"
@@ -1310,6 +1500,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P45"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p45"
@@ -1318,6 +1510,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P46"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p46"
@@ -1326,6 +1520,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P47"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p47"
@@ -1334,6 +1530,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P48"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p48"
@@ -1342,6 +1540,8 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".proxy.TransparentProxyActivity$P49"
+            android:maxAspectRatio="2.4"
+            android:resizeableActivity="true"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale"
             android:exported="true"
             android:process=":p49"
