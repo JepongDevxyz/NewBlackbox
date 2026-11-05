@@ -1363,8 +1363,21 @@ public class IPackageManagerProxy extends BinderInvocationStub {
                 Slog.d(TAG, "CheckSelfPermission: Granting notification/Xiaomi permission: " + permission + " to " + packageName);
                 return PackageManager.PERMISSION_GRANTED;
             }
-            
-            
+
+
+            // DevxyzClone 1.1.7 (STUDY-RESEARCH-GAPS Lead A / PR #48 port):
+            // the network branch this hook never had - without it a guest's
+            // checkSelfPermission(INTERNET, guestPkg) falls through to the
+            // real PM under the guest's own package name, and a DENIED
+            // answer there is the documented cause of in-guest WebView
+            // ERR_CACHE_MISS / blocked network loads on Android 15/16.
+            if (isNetworkPermission(permission)) {
+                Slog.d(TAG, "CheckSelfPermission: Granting network permission: " + permission + " to " + packageName);
+                diagLog("checkSelfPermission INTERNET granted perm=" + permission + " pkg=" + packageName);
+                return PackageManager.PERMISSION_GRANTED;
+            }
+
+
             return method.invoke(who, args);
         }
     }
@@ -1455,6 +1468,20 @@ public class IPackageManagerProxy extends BinderInvocationStub {
     }
 
     
+    // DevxyzClone 1.1.7 (STUDY-RESEARCH-GAPS Lead A / PR #48 port):
+    // the network permission set, mirroring the isNetworkPermission()
+    // helper reinstated in IActivityManagerProxy.
+    private static boolean isNetworkPermission(String permission) {
+        if (permission == null) return false;
+        return permission.equals(android.Manifest.permission.INTERNET)
+                || permission.equals(android.Manifest.permission.ACCESS_NETWORK_STATE)
+                || permission.equals(android.Manifest.permission.ACCESS_WIFI_STATE)
+                || permission.equals(android.Manifest.permission.CHANGE_NETWORK_STATE)
+                || permission.equals(android.Manifest.permission.CHANGE_WIFI_STATE)
+                || permission.equals(android.Manifest.permission.CHANGE_WIFI_MULTICAST_STATE);
+    }
+
+
     private static boolean isAudioPermission(String permission) {
         if (permission == null) return false;
         return permission.equals(android.Manifest.permission.RECORD_AUDIO)

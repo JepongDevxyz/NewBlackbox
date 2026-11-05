@@ -251,16 +251,36 @@ public class HCallbackProxy implements IInjectHook, Handler.Callback {
             int taskId = BRIActivityManager.get(BRActivityManagerNative.get().getDefault()).getTaskForActivity(token, false);
             BlackBoxCore.getBActivityManager().onActivityCreated(taskId, token, stubRecord.mActivityRecord);
 
-            if(BuildCompat.isTiramisu()){
+            diagRemoveLaunchSecurityProtection(stubRecord.mTarget);
+
+            if (BuildCompat.isS()) {
+                // DevxyzClone 1.1.7 (STUDY-RESEARCH-GAPS Lead B, ZiTanIOI
+                // fork port): one unified modern branch, replacing the
+                // isTiramisu()/isS() pair under which Android 16 (SDK 36)
+                // took an item-only swap - no launching-record swap and no
+                // checkActivityClient(). The fork's shape: swap the
+                // launching-activity record first, null-guarded (their
+                // Android 16 NPE fix - getLaunchingActivity() can return
+                // null where the transaction is item-driven), then ALSO
+                // swap the LaunchActivityItem itself (on recent Android
+                // its execute() builds a fresh ActivityClientRecord from
+                // the item's own fields, so the item must carry the
+                // target for the target activity to be instantiated),
+                // then wrap the live ActivityClientController via
+                // checkActivityClient() so result-carrying calls
+                // (finishActivity carries resultCode/data out of the
+                // guest) go through the proxy.
+                Object record = BRActivityThread.get(BlackBoxCore.mainThread()).getLaunchingActivity(token);
+                if (record != null) {
+                    ActivityThreadActivityClientRecordContext clientRecordContext = BRActivityThreadActivityClientRecord.get(record);
+                    clientRecordContext._set_intent(stubRecord.mTarget);
+                    clientRecordContext._set_activityInfo(activityInfo);
+                    clientRecordContext._set_packageInfo(BActivityThread.currentActivityThread().getPackageInfo());
+                }
+
                 LaunchActivityItemContext launchActivityItemContext = BRLaunchActivityItem.get(r);
                 launchActivityItemContext._set_mIntent(stubRecord.mTarget);
                 launchActivityItemContext._set_mInfo(activityInfo);
-            } else if (BuildCompat.isS()) {
-                Object record = BRActivityThread.get(BlackBoxCore.mainThread()).getLaunchingActivity(token);
-                ActivityThreadActivityClientRecordContext clientRecordContext = BRActivityThreadActivityClientRecord.get(record);
-                clientRecordContext._set_intent(stubRecord.mTarget);
-                clientRecordContext._set_activityInfo(activityInfo);
-                clientRecordContext._set_packageInfo(BActivityThread.currentActivityThread().getPackageInfo());
 
                 checkActivityClient();
             } else if (BuildCompat.isPie()) {
@@ -292,6 +312,34 @@ public class HCallbackProxy implements IInjectHook, Handler.Callback {
             }
         }
         return false;
+    }
+
+    // DevxyzClone 1.1.7 (STUDY-RESEARCH-GAPS Lead D, diagnostic only):
+    // Android 16's intent-redirection hardening can refuse to launch a
+    // sub-level intent that arrived inside another intent's extras -
+    // which is literally the shape of stub forwarding (the guest target
+    // rides in the shadow's "_B_|_target_" extra and is extracted here).
+    // The study rates the fit LOW (stub forwarding is same-UID
+    // end-to-end and results do not travel as nested intents), so this
+    // is a cheap A/B diagnostic, not a fix: on API 36+ the platform
+    // opt-out is applied to the target intent before it is installed
+    // into the launch item/record, reflectively (the host's targetSdk
+    // is 28, so the API is not directly callable; Google's guidance
+    // sanctions the reflective call for targetSdk <= 35) and fully
+    // try/caught - any failure leaves the launch exactly as it was.
+    private void diagRemoveLaunchSecurityProtection(Intent target) {
+        try {
+            if (target == null || android.os.Build.VERSION.SDK_INT < 36) {
+                return;
+            }
+            java.lang.reflect.Method m = Intent.class.getMethod("removeLaunchSecurityProtection");
+            m.invoke(target);
+            DiagLog.log("launchSecProtection removed (A16 diagnostic) cmp="
+                    + (target.getComponent() != null
+                            ? target.getComponent().flattenToShortString()
+                            : String.valueOf(target.getAction())));
+        } catch (Throwable ignored) {
+        }
     }
 
     private void checkActivityClient() {

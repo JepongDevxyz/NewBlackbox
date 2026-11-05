@@ -853,6 +853,18 @@ public class IActivityManagerProxy extends ClassInvocationStub {
                     || permission.equals(Manifest.permission.SEND_SMS)) {
                 return PackageManager.PERMISSION_GRANTED;
             }
+
+            // DevxyzClone 1.1.7 (STUDY-RESEARCH-GAPS Lead A / PR #48 port):
+            // the network branch the merged PR #48 removed from this hook -
+            // without it an AMS-level checkPermission(INTERNET, ...) from a
+            // guest falls through to the real service and can deny, the
+            // documented WebView ERR_CACHE_MISS / blockedNetworkLoads cause
+            // on Android 15/16 for this engine lineage.
+            if (isNetworkPermission(permission)) {
+                Slog.d(TAG, "ActivityManager checkPermission: Granting network permission: " + permission);
+                DiagLog.log("checkPermission NET granted perm=" + permission);
+                return PackageManager.PERMISSION_GRANTED;
+            }
             
             
             if (isAudioPermission(permission)) {
@@ -871,6 +883,44 @@ public class IActivityManagerProxy extends ClassInvocationStub {
     }
 
     
+    // DevxyzClone 1.1.7 (STUDY-RESEARCH-GAPS Lead A / PR #48 port):
+    // the device-aware twin of checkPermission above, also removed from
+    // upstream by the merged PR #48. The proxy framework matches hooks by
+    // method name, so the permission is located by scanning the args for
+    // a network permission string rather than assuming an AIDL argument
+    // position; non-network calls are forwarded with their args
+    // untouched (in particular no UID rewrite is applied here - this
+    // method's trailing int is a userId, not a uid).
+    @ProxyMethod("checkPermissionForDevice")
+    public static class checkPermissionForDevice extends MethodHook {
+        @Override
+        protected Object hook(Object who, Method method, Object[] args) throws Throwable {
+            if (args != null) {
+                for (Object arg : args) {
+                    if (arg instanceof String && isNetworkPermission((String) arg)) {
+                        Slog.d(TAG, "ActivityManager checkPermissionForDevice: Granting network permission: " + arg);
+                        DiagLog.log("checkPermissionForDevice NET granted perm=" + arg);
+                        return PackageManager.PERMISSION_GRANTED;
+                    }
+                }
+            }
+            return method.invoke(who, args);
+        }
+    }
+
+    // DevxyzClone 1.1.7 (STUDY-RESEARCH-GAPS Lead A / PR #48 port):
+    // the network permission set the PR's isNetworkPermission() helper
+    // granted for virtual apps.
+    private static boolean isNetworkPermission(String permission) {
+        if (permission == null) return false;
+        return permission.equals(Manifest.permission.INTERNET)
+                || permission.equals(Manifest.permission.ACCESS_NETWORK_STATE)
+                || permission.equals(Manifest.permission.ACCESS_WIFI_STATE)
+                || permission.equals(Manifest.permission.CHANGE_NETWORK_STATE)
+                || permission.equals(Manifest.permission.CHANGE_WIFI_STATE)
+                || permission.equals(Manifest.permission.CHANGE_WIFI_MULTICAST_STATE);
+    }
+
     private static boolean isAudioPermission(String permission) {
         if (permission == null) return false;
         return permission.equals(Manifest.permission.RECORD_AUDIO)
