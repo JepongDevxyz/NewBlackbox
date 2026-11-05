@@ -431,6 +431,60 @@ public class IPackageManagerProxy extends BinderInvocationStub {
         addMethodHook(new XiaomiSecurityBypass());
     }
 
+    // ===== DevxyzClone 1.1.2 (F2): query-call containment at the PM
+    // stub dispatch =====
+    // Mirrors the safe-default pattern IActivityManagerProxy.invoke()
+    // already applies to the AM stub: an exception escaping a QUERY-TYPE
+    // PackageManager call must not propagate into the guest, where an
+    // unarmored caller (framework code running inside UI composition is
+    // the case that killed the Muse clone) dies on the spot. Query
+    // calls are pure reads with well-defined "absent" answers, so
+    // returning the method's safe default is semantically safe.
+    // Mutating / install-type calls are deliberately NOT covered: their
+    // exceptions propagate exactly as in 1.1.1.
+    private static boolean isContainedQueryMethod(String name) {
+        return "getPackageInfo".equals(name)
+                || "getPackageInfoVersioned".equals(name)
+                || "getApplicationInfo".equals(name)
+                || "getProviderInfo".equals(name)
+                || "getComponentEnabledSetting".equals(name)
+                || "resolveIntent".equals(name)
+                || "resolveService".equals(name)
+                || "resolveContentProvider".equals(name)
+                || "queryIntentActivities".equals(name)
+                || "queryIntentServices".equals(name)
+                || "queryIntentReceivers".equals(name)
+                || "queryContentProviders".equals(name)
+                || "checkSignatures".equals(name);
+    }
+
+    private static Object querySafeDefault(String name) {
+        if ("getComponentEnabledSetting".equals(name)) {
+            return PackageManager.COMPONENT_ENABLED_STATE_DEFAULT;
+        }
+        if ("checkSignatures".equals(name)) {
+            return PackageManager.SIGNATURE_NO_MATCH;
+        }
+        return null;
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        try {
+            return super.invoke(proxy, method, args);
+        } catch (Throwable e) {
+            String name = method.getName();
+            if (!isContainedQueryMethod(name)) {
+                throw e;
+            }
+            diagLog("pmQueryContained method=" + name
+                    + " caller=" + BActivityThread.getAppPackageName()
+                    + " err=" + e.getClass().getSimpleName()
+                    + " -> safe default (1.1.2)");
+            return querySafeDefault(name);
+        }
+    }
+
     @ProxyMethod("resolveIntent")
     public static class ResolveIntent extends MethodHook {
         @Override
@@ -1157,7 +1211,20 @@ public class IPackageManagerProxy extends BinderInvocationStub {
             if (AppSystemEnv.isOpenPackage(componentName)) {
                 return method.invoke(who, args);
             }
-            throw new IllegalArgumentException();
+            // DevxyzClone 1.1.2 (F1; STUDY-MUSE-SETTINGS-CRASH candidate
+            // 1a): this was a bare `throw new IllegalArgumentException()` -
+            // the only bare throw in the whole PM hook surface, where
+            // every sibling hook returns null or a default. A routine
+            // miss must never throw into a guest: a caller that does not
+            // armor this specific PM call (e.g. framework code running
+            // during UI composition) dies instantly on it. Answer the
+            // same default the first branch above already returns for
+            // virtual packages, and leave a DiagLog line on record.
+            diagLog("getComponentEnabledSetting caller=" + BActivityThread.getAppPackageName()
+                    + " q=" + packageName
+                    + " cmp=" + componentName.flattenToShortString()
+                    + " -> COMPONENT_ENABLED_STATE_DEFAULT (1.1.2: default returned, no throw)");
+            return PackageManager.COMPONENT_ENABLED_STATE_DEFAULT;
         }
     }
 
