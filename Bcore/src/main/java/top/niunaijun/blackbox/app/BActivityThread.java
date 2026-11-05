@@ -76,6 +76,7 @@ import top.niunaijun.blackbox.fake.delegate.ContentProviderDelegate;
 
 import top.niunaijun.blackbox.fake.hook.HookManager;
 import top.niunaijun.blackbox.fake.service.HCallbackProxy;
+import top.niunaijun.blackbox.utils.DiagLog;
 import top.niunaijun.blackbox.utils.Reflector;
 import top.niunaijun.blackbox.utils.SafeContextWrapper;
 import top.niunaijun.blackbox.utils.GlobalContextWrapper;
@@ -362,8 +363,44 @@ public class BActivityThread extends IBActivityThread.Stub {
             CrashHandler.create();
         } catch (Throwable ignored) {
         }
+        // DevxyzClone 1.1.2 (F3a; ported from DevxyzMuse v1.0.1
+        // diagnostics): persist the FULL stack of any uncaught exception
+        // in this virtual process to the DiagLog file BEFORE the default
+        // handler kills the process. CrashHandler delegates to
+        // BlackBoxCore's exception handler first, so setting it here
+        // captures the real cause of clone-process deaths (e.g. the Muse
+        // clone dying the instant its Settings gear is tapped) instead
+        // of the stack dying with the process in logcat. The handler
+        // only records; crash semantics are unchanged.
+        try {
+            BlackBoxCore.get().setExceptionHandler(new Thread.UncaughtExceptionHandler() {
+                @Override
+                public void uncaughtException(Thread t, Throwable e) {
+                    try {
+                        java.io.StringWriter sw = new java.io.StringWriter();
+                        e.printStackTrace(new java.io.PrintWriter(sw));
+                        DiagLog.log("CRASH pkg=" + packageName
+                                + " process=" + processName
+                                + " thread=" + t.getName()
+                                + "\n" + sw.toString());
+                    } catch (Throwable ignored) {
+                    }
+                }
+            });
+        } catch (Throwable ignored) {
+        }
 
         PackageInfo packageInfo = BlackBoxCore.getBPackageManager().getPackageInfo(packageName, PackageManager.GET_PROVIDERS, BActivityThread.getUserId());
+        // DevxyzClone 1.1.2 (ported from DevxyzMuse 1.0.2 hardening,
+        // captured on device 2026-11-05): a GMS service start raced the
+        // package registry and getPackageInfo returned null, so the next
+        // line NPE'd and killed the bind. Bail out quietly instead of
+        // crashing the process bind.
+        if (packageInfo == null || packageInfo.applicationInfo == null) {
+            DiagLog.log("bindApplication bail: no PackageInfo for pkg=" + packageName
+                    + " process=" + processName);
+            return;
+        }
         ApplicationInfo applicationInfo = packageInfo.applicationInfo;
         if (packageInfo.providers == null) {
             packageInfo.providers = new ProviderInfo[]{};

@@ -14,6 +14,7 @@ import top.niunaijun.blackbox.fake.service.IAccountManagerProxy;
 import top.niunaijun.blackbox.fake.service.IActivityClientProxy;
 import top.niunaijun.blackbox.fake.service.IActivityManagerProxy;
 import top.niunaijun.blackbox.fake.service.IActivityTaskManagerProxy;
+import top.niunaijun.blackbox.fake.service.IRoleManagerProxy;
 import top.niunaijun.blackbox.fake.service.IAlarmManagerProxy;
 import top.niunaijun.blackbox.fake.service.IAppOpsManagerProxy;
 import top.niunaijun.blackbox.fake.service.IAppWidgetManagerProxy;
@@ -192,6 +193,10 @@ public class HookManager {
             
             if (BuildCompat.isQ()) {
                 addInjector(new IActivityTaskManagerProxy());
+                // Role service exists from Q; without this proxy the real
+                // RoleService kills guests whose UI queries role state
+                // (checkPackage uid mismatch - see IRoleManagerProxy).
+                addInjector(new IRoleManagerProxy());
             }
             
             if (BuildCompat.isPie()) {

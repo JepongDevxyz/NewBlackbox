@@ -234,6 +234,22 @@ public class ActivityManagerCommonProxy {
                 }
                 boolean viewEscape = Intent.ACTION_VIEW.equals(intent.getAction())
                         && intent.getDataString() != null;
+                // DevxyzClone 1.1.2 (F3b; generalized from the DevxyzMuse
+                // v1.0.1 diagnostic, which recorded this for the Muse
+                // clone only): also record SAME-package launches, for
+                // every guest, so the exact activity a settings tap opens
+                // is on record even when it never leaves the guest's own
+                // package (previously only cross-package starts and VIEW
+                // escapes were logged - the blind spot the settings-crash
+                // study named). Cross-package starts are still covered by
+                // the line below, so no start is logged twice.
+                if (tgtPkg != null && callerPkg != null && tgtPkg.equals(callerPkg)) {
+                    fbDiagLog("startActivity[same-pkg-probe] caller=" + callerPkg
+                            + " cmp=" + intent.getComponent()
+                            + " act=" + intent.getAction()
+                            + " flags=0x" + Integer.toHexString(intent.getFlags())
+                            + " data=" + intent.getDataString());
+                }
                 if (viewEscape || (tgtPkg != null && callerPkg != null && !tgtPkg.equals(callerPkg))) {
                     fbDiagLog("startActivity caller=" + callerPkg
                             + " -> target=" + tgtPkg
@@ -460,6 +476,16 @@ public class ActivityManagerCommonProxy {
     public static class FinishActivity extends MethodHook {
         @Override
         protected Object hook(Object who, Method method, Object[] args) throws Throwable {
+            // DevxyzClone 1.1.2 (F3b; generalized from the DevxyzMuse
+            // v1.0.1 diagnostic, Muse-only there): a silent finish of a
+            // guest activity with no CRASH line in DiagLog is itself the
+            // fingerprint of a self-exit path, distinct from an exception
+            // death - record it for every guest.
+            try {
+                fbDiagLog("finishActivity caller=" + BActivityThread.getAppPackageName()
+                        + " token=" + args[0]);
+            } catch (Throwable ignored) {
+            }
             BlackBoxCore.getBActivityManager().onFinishActivity((IBinder) args[0]);
             return method.invoke(who, args);
         }
