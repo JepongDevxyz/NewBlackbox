@@ -16,6 +16,15 @@ public class ActivityRecord extends Binder {
     public IBinder resultTo;
     public ActivityInfo info;
     public ComponentName component;
+    // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §5 #1): the caller captured at
+    // record-creation time, when ActivityStack.startActivityLocked has
+    // just resolved it from the launch's resultTo. getCallingPackage /
+    // getCallingActivity answer from these stamps first, so the answer
+    // survives later pruning of the caller's record (the old resultTo
+    // re-lookup collapsed to the host package on any miss). Null when
+    // the caller was unknown at creation time.
+    public String callerPackage;
+    public ComponentName callerComponent;
     public Intent intent;
     public int userId;
     public boolean finished;

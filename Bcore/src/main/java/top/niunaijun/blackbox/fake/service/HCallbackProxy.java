@@ -24,6 +24,7 @@ import black.android.app.BRActivityThreadActivityClientRecord;
 import black.android.app.BRActivityThreadCreateServiceData;
 import black.android.app.BRActivityThreadH;
 import black.android.app.BRIActivityManager;
+import black.android.app.servertransaction.BRActivityResultItem;
 import black.android.app.servertransaction.BRClientTransaction;
 import black.android.app.servertransaction.BRLaunchActivityItem;
 import black.android.app.servertransaction.LaunchActivityItemContext;
@@ -33,6 +34,7 @@ import top.niunaijun.blackbox.app.BActivityThread;
 import top.niunaijun.blackbox.fake.hook.IInjectHook;
 import top.niunaijun.blackbox.proxy.ProxyManifest;
 import top.niunaijun.blackbox.proxy.record.ProxyActivityRecord;
+import top.niunaijun.blackbox.utils.DiagLog;
 import top.niunaijun.blackbox.utils.Slog;
 import top.niunaijun.blackbox.utils.compat.BuildCompat;
 
@@ -73,6 +75,7 @@ public class HCallbackProxy implements IInjectHook, Handler.Callback {
             try {
                 if (BuildCompat.isPie()) {
                     if (msg.what == BRActivityThreadH.get().EXECUTE_TRANSACTION()) {
+                        diagActivityResults(msg.obj);
                         if (handleLaunchActivity(msg.obj)) {
                             getH().sendMessageAtFrontOfQueue(Message.obtain(msg));
                             return true;
@@ -114,6 +117,82 @@ public class HCallbackProxy implements IInjectHook, Handler.Callback {
             }
         }
         return null;
+    }
+
+    // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §5, observation hook 2):
+    // log every ActivityResultItem a client transaction carries into
+    // this guest process, so a device round shows the exact result a
+    // callee returned - resultCode=0 (with error keys) reaching ML's
+    // process proves Katana finished CANCELED and closes the delivery
+    // question; resultCode=-1 with token extras would move the hunt
+    // inside ML; absence of the line reopens the delivery chain.
+    // Observation only: the transaction is never modified, and every
+    // failure is swallowed - a logging failure must never break the
+    // transaction it observes.
+    private void diagActivityResults(Object clientTransaction) {
+        try {
+            if (clientTransaction == null) {
+                return;
+            }
+            List<Object> callbacks = BRClientTransaction.get(clientTransaction).mActivityCallbacks();
+            if (callbacks == null) {
+                return;
+            }
+            String resultItemName = BRActivityResultItem.getRealClass().getName();
+            for (Object item : callbacks) {
+                try {
+                    if (item == null
+                            || !resultItemName.equals(item.getClass().getCanonicalName())) {
+                        continue;
+                    }
+                    List resultInfos = BRActivityResultItem.get(item).mResultInfoList();
+                    if (resultInfos == null) {
+                        continue;
+                    }
+                    for (Object resultInfo : resultInfos) {
+                        try {
+                            if (resultInfo == null) {
+                                continue;
+                            }
+                            Object who = readResultField(resultInfo, "mResultWho");
+                            Object rc = readResultField(resultInfo, "mRequestCode");
+                            Object code = readResultField(resultInfo, "mResultCode");
+                            Object dataObj = readResultField(resultInfo, "mData");
+                            Intent data = dataObj instanceof Intent ? (Intent) dataObj : null;
+                            String keys = "none";
+                            if (data != null && data.getExtras() != null) {
+                                keys = String.valueOf(data.getExtras().keySet());
+                            }
+                            DiagLog.log("sendResult pkg=" + BActivityThread.getAppPackageName()
+                                    + " who=" + (who != null ? String.valueOf(who) : "null")
+                                    + " rc=" + (rc instanceof Number
+                                            ? String.valueOf(((Number) rc).intValue()) : "?")
+                                    + " resultCode=" + (code instanceof Number
+                                            ? String.valueOf(((Number) code).intValue()) : "?")
+                                    + " hasData=" + (data != null)
+                                    + " keys=" + keys);
+                        } catch (Throwable ignored) {
+                        }
+                    }
+                } catch (Throwable ignored) {
+                }
+            }
+        } catch (Throwable ignored) {
+        }
+    }
+
+    // Plain reflection for android.app.ResultInfo's fields - no
+    // BlackReflection interface for ResultInfo exists in-tree (only
+    // ActivityResultItem's), so its fields are read directly; callers
+    // treat a null return as "unreadable".
+    private static Object readResultField(Object target, String name) {
+        try {
+            java.lang.reflect.Field field = target.getClass().getDeclaredField(name);
+            field.setAccessible(true);
+            return field.get(target);
+        } catch (Throwable ignored) {
+            return null;
+        }
     }
 
     private boolean handleLaunchActivity(Object client) {

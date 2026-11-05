@@ -780,6 +780,21 @@ public class IPackageManagerProxy extends BinderInvocationStub {
                         }
                     }
                 }
+                // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §5, observation
+                // hook 3): the signature answer actually returned for the
+                // two packages caller validation depends on, hashed the
+                // way Facebook computes an app key hash. Genuine ML =
+                // 1lnFOXqPKltvNInlRqOJylT9KPw= ; the re-signed lab APK =
+                // 3yzO9SY58ZfUVehKbaQvtxQbMj8= ; Katana's own hash under
+                // q=<hostPkg> from a katana caller = the §2 trap caught
+                // in the act.
+                if (shouldAttachSigningInfo(flags) && packageName != null
+                        && ("com.mobile.legends".equals(packageName)
+                        || packageName.equals(BlackBoxCore.getHostPkg()))) {
+                    diagLog("sigAnswer caller=" + BlackBoxCore.getAppPackageName()
+                            + " q=" + packageName
+                            + " hash=" + diagKeyHash(packageInfo.signatures));
+                }
                 return packageInfo;
             }
             if (AppSystemEnv.isOpenPackage(packageName)) {
@@ -836,6 +851,22 @@ public class IPackageManagerProxy extends BinderInvocationStub {
                 String hostPkg = BlackBoxCore.getHostPkg();
                 String currentPkg = BlackBoxCore.getAppPackageName();
                 if (hostPkg == null || currentPkg == null || hostPkg.equals(currentPkg)) {
+                    return;
+                }
+                // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §2, belt-and-
+                // braces for §5 #1): this helper is only ever invoked for
+                // HOST-package answers. A Meta-family querier asking
+                // about the host is not asking about itself - it is
+                // validating a CALLER whose identity collapsed to the
+                // host (ActivityStack's getCallingPackage fallback).
+                // Substituting the querier's own certs would hand Katana
+                // its own key hash as the "caller's", which Facebook's
+                // server rejects at the token mint. Never substitute for
+                // a Meta-family querier (katana/orca/wakizashi/aura).
+                if (isMetaFamilyCaller(currentPkg)
+                        || PKG_FACEBOOK_KATANA.equals(currentPkg)) {
+                    diagLog("sigSubst SKIPPED meta-querier caller=" + currentPkg
+                            + " q=" + hostPkg);
                     return;
                 }
                 PackageInfo own = BlackBoxCore.getBPackageManager()
@@ -907,23 +938,48 @@ public class IPackageManagerProxy extends BinderInvocationStub {
                         String cur = BlackBoxCore.getAppPackageName();
                         String host = BlackBoxCore.getHostPkg();
                         if (cur != null && host != null && !host.equals(cur)) {
-                            PackageInfo own = BlackBoxCore.getBPackageManager()
-                                    .getPackageInfo(cur, flags, BlackBoxCore.getUserId());
-                            if (own != null) {
-                                if (own.signingInfo != null) {
-                                    packageInfo.signingInfo = own.signingInfo;
+                            // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §2):
+                            // identical meta-querier skip as GetPackageInfo's
+                            // replaceSignaturesWithCurrentApp - the
+                            // substitution is inlined at this entry point,
+                            // so the guard is inlined with it (see
+                            // CHANGES-1.1.5.md).
+                            if (isMetaFamilyCaller(cur)
+                                    || PKG_FACEBOOK_KATANA.equals(cur)) {
+                                diagLog("sigSubst SKIPPED meta-querier caller=" + cur
+                                        + " q=" + packageName);
+                            } else {
+                                PackageInfo own = BlackBoxCore.getBPackageManager()
+                                        .getPackageInfo(cur, flags, BlackBoxCore.getUserId());
+                                if (own != null) {
+                                    if (own.signingInfo != null) {
+                                        packageInfo.signingInfo = own.signingInfo;
+                                    }
+                                    if (own.signatures != null && own.signatures.length > 0) {
+                                        packageInfo.signatures = own.signatures;
+                                    }
+                                    diagLog("getPackageInfoVersioned sigSubst applied caller=" + cur
+                                            + " q=" + packageName
+                                            + " sigHash=" + diagKeyHash(packageInfo.signatures)
+                                            + " signingInfoHash=" + diagSigningInfoHash(packageInfo.signingInfo));
                                 }
-                                if (own.signatures != null && own.signatures.length > 0) {
-                                    packageInfo.signatures = own.signatures;
-                                }
-                                diagLog("getPackageInfoVersioned sigSubst applied caller=" + cur
-                                        + " q=" + packageName
-                                        + " sigHash=" + diagKeyHash(packageInfo.signatures)
-                                        + " signingInfoHash=" + diagSigningInfoHash(packageInfo.signingInfo));
                             }
                         }
                     } catch (Throwable ignored) {
                     }
+                }
+                // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §5, observation
+                // hook 3): same sigAnswer line as GetPackageInfo - this
+                // entry point returns the same BPMS answers, so the
+                // study's insertion point (after the BPMS answer, before
+                // return) applies identically. The real-PM passthrough
+                // branch below is not a BPMS answer and stays unlogged.
+                if ((flags & (0x00000040 | 0x08000000)) != 0
+                        && ("com.mobile.legends".equals(packageName)
+                        || packageName.equals(BlackBoxCore.getHostPkg()))) {
+                    diagLog("sigAnswer caller=" + BlackBoxCore.getAppPackageName()
+                            + " q=" + packageName
+                            + " hash=" + diagKeyHash(packageInfo.signatures));
                 }
                 return packageInfo;
             }

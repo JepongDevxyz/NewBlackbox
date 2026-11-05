@@ -129,6 +129,33 @@ public class IActivityManagerProxy extends ClassInvocationStub {
         }
     }
 
+    // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §3/§5 #2): third mirror of
+    // the 1.1.1 native-route predicate - IPackageManagerProxy and
+    // ActivityManagerCommonProxy hold the other two copies, both
+    // private static, so the predicate cannot be called from this class
+    // and is replicated here from the same data sources. Keep in
+    // lockstep: the route is active exactly when the current caller is
+    // an ordinary clone app (not Katana itself, not the host, not a
+    // Meta-family caller: aura/orca/wakizashi) AND Katana is installed
+    // inside the container for the caller's virtual user.
+    private static boolean isKatanaNativeRouteActive() {
+        try {
+            String callerPackage = BActivityThread.getAppPackageName();
+            if (callerPackage == null
+                    || "com.facebook.katana".equals(callerPackage)
+                    || callerPackage.equals(BlackBoxCore.getHostPkg())
+                    || "com.facebook.aura".equals(callerPackage)
+                    || "com.facebook.orca".equals(callerPackage)
+                    || "com.facebook.wakizashi".equals(callerPackage)) {
+                return false;
+            }
+            return BlackBoxCore.getBPackageManager()
+                    .isInstalled("com.facebook.katana", BActivityThread.getUserId());
+        } catch (Throwable ignored) {
+        }
+        return false;
+    }
+
     @ProxyMethod("getContentProvider")
     public static class GetContentProvider extends MethodHook {
         @Override
@@ -156,11 +183,26 @@ public class IActivityManagerProxy extends ClassInvocationStub {
                         if (callerPackage != null
                                 && !callerPackage.equals(BlackBoxCore.getHostPkg())
                                 && !authStr.startsWith(callerPackage)) {
-                            Slog.w(TAG, "Blocked Meta provider access from clone: "
-                                    + authStr + " caller=" + callerPackage);
-                            DiagLog.log("getContentProvider BLOCKED meta auth=" + authStr
-                                    + " caller=" + callerPackage);
-                            return null;
+                            // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §3/§5
+                            // #2): this block was the one 1.1.1 gate the
+                            // port missed - it refused clone -> Katana
+                            // provider acquisition even on the native
+                            // route, where the provider being acquired is
+                            // the CLONED Katana's own virtual provider.
+                            // When the native route is active for this
+                            // caller, do not block: fall through to the
+                            // virtual provider resolution below. Off the
+                            // native route the block is unchanged.
+                            if (isKatanaNativeRouteActive()) {
+                                DiagLog.log("getContentProvider ALLOWED meta-native auth=" + authStr
+                                        + " caller=" + callerPackage);
+                            } else {
+                                Slog.w(TAG, "Blocked Meta provider access from clone: "
+                                        + authStr + " caller=" + callerPackage);
+                                DiagLog.log("getContentProvider BLOCKED meta auth=" + authStr
+                                        + " caller=" + callerPackage);
+                                return null;
+                            }
                         }
                     } catch (Throwable ignored) {
                     }

@@ -284,7 +284,7 @@ public class ActivityStack {
         // foreign requestCode, and the real caller waits forever.
         logRouteLocked("sourceTask", sourceRecord, activityInfo, resultTo, requestCode);
         return startActivityInSourceTask(intent,
-                resolvedType, resultTo, resultWho, requestCode, flags, options, userId, topActivityRecord, activityInfo, launchModeFlags);
+                resolvedType, resultTo, resultWho, requestCode, flags, options, userId, topActivityRecord, activityInfo, launchModeFlags, sourceRecord);
     }
 
     // DevxyzClone 1.1.3 (STUDY-FB-NATIVE-RETURN §3): one DiagLog line per
@@ -327,6 +327,16 @@ public class ActivityStack {
             activityInfo, IBinder resultTo, String resultWho, int requestCode, int flags,
             Bundle options, ActivityRecord sourceRecord, int launchMode) {
         ActivityRecord record = newActivityRecord(intent, activityInfo, resultTo, userId);
+        // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §5 #1): stamp the caller
+        // onto the record NOW, while startActivityLocked's resolution of
+        // it (from the launch's resultTo) is certain. getCallingPackage /
+        // getCallingActivity answer from the stamp first, so a later
+        // pruning of the caller's record can no longer collapse the
+        // answer to the host package.
+        if (sourceRecord != null && sourceRecord.info != null) {
+            record.callerPackage = sourceRecord.info.packageName;
+            record.callerComponent = sourceRecord.component;
+        }
         Intent shadow = startActivityProcess(userId, intent, activityInfo, record);
 
         boolean forResult = requestCode >= 0 && sourceRecord != null && sourceRecord.processRecord != null;
@@ -366,8 +376,22 @@ public class ActivityStack {
     private int startActivityInSourceTask(Intent intent, String resolvedType,
                                           IBinder resultTo, String resultWho, int requestCode, int flags,
                                           Bundle options,
-                                          int userId, ActivityRecord sourceRecord, ActivityInfo activityInfo, int launchMode) {
+                                          int userId, ActivityRecord sourceRecord, ActivityInfo activityInfo, int launchMode,
+                                          ActivityRecord callerRecord) {
         ActivityRecord selfRecord = newActivityRecord(intent, activityInfo, resultTo, userId);
+        // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §5 #1): same caller stamp
+        // as the new-task branch. NOTE: this method's existing
+        // "sourceRecord" parameter is the TARGET task's top record (the
+        // tail passes it for its appThread), NOT the resolved caller -
+        // when the target task is a pre-existing Katana task it is a
+        // Katana activity, and stamping from it would name Katana as its
+        // own caller. The resolved caller is therefore passed separately
+        // (callerRecord, startActivityLocked's sourceRecord) and is the
+        // only stamp source; null leaves the stamp unset.
+        if (callerRecord != null && callerRecord.info != null) {
+            selfRecord.callerPackage = callerRecord.info.packageName;
+            selfRecord.callerComponent = callerRecord.component;
+        }
         Intent shadow = startActivityProcess(userId, intent, activityInfo, selfRecord);
         shadow.setAction(UUID.randomUUID().toString());
         shadow.addFlags(launchMode);
@@ -587,9 +611,34 @@ public class ActivityStack {
             ActivityRecord activityRecordByToken = findActivityRecordByToken(userId, token);
             if (activityRecordByToken != null) {
                 ActivityRecord resultTo = findActivityRecordByToken(userId, activityRecordByToken.resultTo);
-                if (resultTo != null) {
-                    return resultTo.info.packageName;
+                boolean resultToFound = resultTo != null;
+                // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §5 #1): the caller
+                // stamped on the record at creation time wins over the
+                // resultTo re-lookup. The re-lookup collapses to the host
+                // package whenever either record has been pruned from the
+                // task set, and a host answer here is what sends Katana's
+                // caller validation into the own-cert key-hash trap (see
+                // CHANGES-1.1.5.md). The host fallback below now applies
+                // only when the record itself is unknown, or both the
+                // stamp and the re-lookup miss.
+                String answer;
+                if (activityRecordByToken.callerPackage != null) {
+                    answer = activityRecordByToken.callerPackage;
+                } else if (resultToFound) {
+                    answer = resultTo.info.packageName;
+                } else {
+                    answer = BlackBoxCore.getHostPkg();
                 }
+                // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §5, observation
+                // hook 1): Katana asking who called it is the decisive
+                // observation - "-> com.jepongdevxyz.appclone" confirms
+                // the caller collapse; "-> com.mobile.legends" kills it.
+                if (activityRecordByToken.info != null
+                        && "com.facebook.katana".equals(activityRecordByToken.info.packageName)) {
+                    DiagLog.log("getCallingPackage for=com.facebook.katana -> " + answer
+                            + " resultToFound=" + resultToFound);
+                }
+                return answer;
             }
             return BlackBoxCore.getHostPkg();
         }
@@ -600,6 +649,14 @@ public class ActivityStack {
             synchronizeTasks();
             ActivityRecord activityRecordByToken = findActivityRecordByToken(userId, token);
             if (activityRecordByToken != null) {
+                // DevxyzClone 1.1.5 (STUDY-KATANA-SIDE §5 #1): stamped
+                // caller first, same contract as getCallingPackage; the
+                // host ProxyActivity$P0 fallback now applies only when
+                // the record itself is unknown, or both the stamp and
+                // the resultTo re-lookup miss.
+                if (activityRecordByToken.callerComponent != null) {
+                    return activityRecordByToken.callerComponent;
+                }
                 ActivityRecord resultTo = findActivityRecordByToken(userId, activityRecordByToken.resultTo);
                 if (resultTo != null) {
                     return resultTo.component;
